@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-app
+  template:
+    metadata:
+      labels:
+        app: employee-app
+    spec:
+      containers:
+        - name: employee-app-container
+          image: veeraofr/employee:latest # Replace with your Docker image name/tag
+          ports:
+            - containerPort: 8080 # Spring Boot app port
+          volumeMounts:
+            - name: h2-storage-volume
+              mountPath: /data/h2 # Mount path for H2 database files
+
+      volumes:
+        - name: h2-storage-volume
+          persistentVolumeClaim:
+            claimName: h2-pvc # Reference to the PVC defined below
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: h2-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce # Allow single pod access to volume at a time
+  resources:
+    requests:
+      storage: 1Gi # Allocate 1GB of storage for H2 database files
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-app-service
+spec:
+  selector:
+    app: employee-app # Match label from deployment spec.template.metadata.labels.app
+  ports:
+    - protocol: TCP
+      port: 8080 # External service port exposed by Kubernetes cluster
+      targetPort: 8080 # Internal container port mapped to service port type NodePort or ClusterIP.

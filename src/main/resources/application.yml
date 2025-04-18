@@ -1,0 +1,14 @@
+logging:
+  level:
+    org.springframework: DEBUG  # Enables debug logging for Spring Boot
+    org.hibernate: DEBUG         # Enables debug logging for Hibernate (if using JPA)
+    # You can add other packages you want to debug as well
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:~/data/testdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+    username: sa
+    password: password
