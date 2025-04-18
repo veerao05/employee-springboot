@@ -34,8 +34,8 @@ This is an Employee Management application built with Spring Boot. It provides C
 Clone the repository and navigate to the project directory:
 
 ```bash
-git clone git@github.com:employee.git
-cd employee
+git clone git@github.com:veerao05/employee-springboot.git
+cd employee-springboot
 ```
 
 ## Prerequisites & Installation
